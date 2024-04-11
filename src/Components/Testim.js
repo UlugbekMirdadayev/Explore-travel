@@ -3,10 +3,12 @@ import { useStoreState } from "../redux/selector";
 import locale from "../localization/locale.json";
 import Frame from "../assets/Vector (2).png";
 import First from "../assets/photo.png";
+import { Arrow } from "./svg";
 
 function Testim() {
   const states = useStoreState();
   const langData = useMemo(() => locale[states.lang], [states.lang]);
+  const [slider, setSlider] = React.useState(0);
 
   return (
     <div className="Testimonials">
@@ -27,9 +29,33 @@ function Testim() {
           <h5>{langData.forget}</h5>
         </div>
       </div>
-      <img src={First} alt="" />
-      <img src={First} alt="" />
-      <img src={First} alt="" />
+      <div className="slider">
+        {Array(3)
+          .fill(0)
+          .map((_, i) => (
+            <img
+              src={`https://picsum.photos/400/50${i}`}
+              alt="..."
+              style={{
+                opacity: i === slider ? 1 : 0,
+              }}
+            />
+          ))}
+        <div className="navigations">
+          <button
+            onClick={() => setSlider((prev) => prev - 1)}
+            disabled={slider === 0}
+          >
+            <Arrow />
+          </button>
+          <button
+            onClick={() => setSlider((prev) => prev + 1)}
+            disabled={slider === 2}
+          >
+            <Arrow />
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
